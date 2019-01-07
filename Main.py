@@ -1,13 +1,11 @@
 from random import randrange
 
-def start(maze):
-    raise NotImplementedError
-
-def end(maze):
-    raise NotImplementedError
 
 WALL = 1
 EMPTY = 0
+ENDING_CELL = 2
+VISITED_CELL = 3
+STARTING_CELL = 4
 
 def generate(width, height, wall_density):
     """
@@ -32,13 +30,63 @@ def generate(width, height, wall_density):
  
     return maze
 
+def search(grid, x, y):
+    if grid[x][y] == ENDING_CELL:
+        #print('found at', x, ',', y)
+        return True
+    elif grid[x][y] == WALL:
+        #print('wall at', x, ',', y)
+        return False
+    elif grid[x][y] == VISITED_CELL:
+        #print('visited at', x, ',', y)
+        return False
+    
+    #print('visiting at', x, ',', y)
+
+    # mark as visited
+    grid[x][y] = VISITED_CELL
+
+    # explore neighbors clockwise starting by the one on the right
+    if ((x < len(grid)-1 and search(grid, x+1, y))
+        or (y > 0 and search(grid, x, y-1))
+        or (x > 0 and search(grid, x-1, y))
+        or (y < len(grid)-1 and search(grid, x, y+1))):
+        return True
+
+    return False
+
+def random_empty_cell_inside_maze(maze):
+    cols = len(maze[0])
+    rows = len(maze)
+    x = randrange(cols)
+    y = randrange(rows)
+    cell = maze[x][y]
+    while cell is not EMPTY:
+        x = randrange(cols)
+        y = randrange(rows)
+        cell = maze[x][y]
+    return ( x, y )
+
+buildstart = random_empty_cell_inside_maze
+buildend = random_empty_cell_inside_maze
+
 def solve(maze, start, end):
-    raise NotImplementedError
+    sx, sy = start(maze)
+    ex, ey = end(maze)
+    maze[ex][ey] = ENDING_CELL
+    #display(maze)
+    #print('start: ( ',sx,',',sy,' )',' end: ( ',ex,',',ey,' )')
+    search(maze, sx, sy)
+    maze[sx][sy] = STARTING_CELL
+    return maze
 
 def display(maze):
     char_mapping = {
             WALL: '#',
-            EMPTY: ' '
+            EMPTY: ' ',
+            ENDING_CELL: 'E',
+            VISITED_CELL: '.',
+            STARTING_CELL: 'O'
     }
     for row in maze:
         maze_row = ""
@@ -47,9 +95,9 @@ def display(maze):
         print(maze_row)
 
 def maze(width, height, wall_density):
-    #display(solve(generate(width, height, wall_density), start, end))
-    display(generate(width, height, wall_density))
+    display(solve(generate(width, height, wall_density), buildstart, buildend))
+    #display(generate(width, height, wall_density))
 
 if __name__ == '__main__':
-    maze(10, 10, .75)
+    maze(10, 10, .25)
 
