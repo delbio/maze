@@ -1,4 +1,5 @@
 from random import randrange
+import argparse
 
 
 WALL = 1
@@ -23,10 +24,14 @@ def generate(width, height, wall_density):
         # Get random cell inside maze
         col = randrange(width)
         row = randrange(height)
-        cell = maze[col][row]
-        if cell == WALL:
-            maze[col][row] = EMPTY
-            num_wall_cells_to_remove -= 1
+        try:
+            cell = maze[col][row]
+            if cell == WALL:
+                maze[col][row] = EMPTY
+                num_wall_cells_to_remove -= 1
+        except IndexError:
+            print(col, row, maze)
+            raise
  
     return maze
 
@@ -98,6 +103,16 @@ def maze(width, height, wall_density):
     display(solve(generate(width, height, wall_density), buildstart, buildend))
     #display(generate(width, height, wall_density))
 
+def getArgs():
+    parser = argparse.ArgumentParser(description='CLI Maze')
+    parser.add_argument('cols', type=int, help='number of columns', default=10 )
+    parser.add_argument('rows', type=int, help='number of rows', default=10 )
+    parser.add_argument('wall_density', type=float, help='wall density', default=.25)
+    return parser.parse_args()
+
 if __name__ == '__main__':
-    maze(10, 10, .25)
+    args = getArgs()
+    
+    print(args.cols, args.rows, args.wall_density)
+    maze(args.cols, args.rows, args.wall_density)
 
