@@ -1,5 +1,5 @@
 from random import randrange
-from .maze_value import Maze, WALL, EMPTY, ENDING_CELL, VISITED_CELL, STARTING_CELL
+from .models import Maze, WALL, EMPTY
 
 
 def generate(width, height, wall_density):
