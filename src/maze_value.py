@@ -2,8 +2,10 @@
 WALL = 1
 EMPTY = 0
 ENDING_CELL = 2
-VISITED_CELL = 3
-STARTING_CELL = 4
+STARTING_CELL = 3
+VISITED_CELL = 4
+HORIZONTAL_PATH = 5,
+VERTICAL_PATH = 6,
 
 class Maze():
     def __init__(self, width, height, init_value):
