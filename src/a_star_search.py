@@ -34,13 +34,13 @@ def a_star_search(graph, start, goal):
         if current == goal:
             break
 
-        for next in graph.neighbords(current):
-            new_cost = cost_so_far[current] + graph.cost(current, next)
-            if next not in cost_so_far or new_cost < cost_so_far[next]:
-                cost_so_far[next] = new_cost
-                priority = new_cost + heuristic(goal, next)
-                frontier.put(next, priority)
-                came_from[next] = current
+        for next_node in graph.neighbords(current):
+            new_cost = cost_so_far[current] + graph.cost(current, next_node)
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+                cost_so_far[next_node] = new_cost
+                priority = new_cost + heuristic(goal, next_node)
+                frontier.put(next_node, priority)
+                came_from[next_node] = current
 
     return came_from, cost_so_far
 
