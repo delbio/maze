@@ -16,29 +16,29 @@ CHAR_MAPPING = {
         START: 'S'
 }
 
-def draw_tile_start(graph, id, width, came_from, **option):
+def draw_tile_start(graph, coord, width, came_from, **option):
     return CHAR_MAPPING[START]
 
-def draw_tile_end(graph, id, width, came_from, **option):
+def draw_tile_end(graph, coord, width, came_from, **option):
     return CHAR_MAPPING[GOAL]
 
-def draw_tile_wall(graph, id, width, came_from, **option):
+def draw_tile_wall(graph, coord, width, came_from, **option):
     return CHAR_MAPPING[WALL] * width
 
-def draw_tile_path_direction(graph, id, width, came_from, **option):
-    if came_from.get(id, None) is not None:
-        x1, y1 = id
-        x2, y2 = came_from[id]
+def draw_tile_path_direction(graph, coord, width, came_from, **option):
+    if came_from.get(coord, None) is not None:
+        x1, y1 = coord
+        x2, y2 = came_from[coord]
         if x2 == x1 + 1 or x2 == x1 -1 : return CHAR_MAPPING[HORIZONTAL_PATH] 
         if y2 == y1 + 1 or y2 == y1 -1 : return CHAR_MAPPING[VERTICAL_PATH]
     else:
         return CHAR_MAPPING[EMPTY]
 
-def draw_tile(graph, id, width, came_from, **option):
-    if graph.get_cell(id) == WALL: return draw_tile_wall(graph, id, width, came_from, **option)
-    if 'start' in option and id == option['start']: return draw_tile_start(graph, id, width, came_from, **option) 
-    if 'goal' in option and id == option['goal']: return draw_tile_end(graph, id, width, came_from, **option) 
-    return draw_tile_path_direction(graph, id, width, came_from, **option)
+def draw_tile(graph, coord, width, came_from, **option):
+    if graph.get_cell(coord) == WALL: return draw_tile_wall(graph, coord, width, came_from, **option)
+    if 'start' in option and coord == option['start']: return draw_tile_start(graph, coord, width, came_from, **option) 
+    if 'goal' in option and coord == option['goal']: return draw_tile_end(graph, coord, width, came_from, **option) 
+    return draw_tile_path_direction(graph, coord, width, came_from, **option)
 
 def draw_grid(args):
     maze, start, goal, came_from, cost_so_far = args
