@@ -60,8 +60,8 @@ class Graph(SquareGrid):
                     ]
             results = []
             all_nodes = self.graph.keys()
-            for dir in dirs:
-                neighbord = (x + dir[0], y + dir[1])
+            for direction in dirs:
+                neighbord = (x + direction[0], y + direction[1])
                 if neighbord in all_nodes:
                     results.append(neighbord)
             self.graph[(x,y)] = results
