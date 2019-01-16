@@ -29,3 +29,6 @@ from Main import maze
 maze(50, 30, .35)
 ```
 
+## Output
+
+![output example](./output.png)
